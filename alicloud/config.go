@@ -29,6 +29,7 @@ import (
 	"github.com/denverdino/aliyungo/ram"
 	"github.com/denverdino/aliyungo/slb"
 	"github.com/hashicorp/terraform/terraform"
+	"mq_admin/service/ons"
 )
 
 // Config of aliyun
@@ -60,6 +61,7 @@ type AliyunClient struct {
 	kmsconn    *kms.Client
 	otsconn    *tablestore.TableStoreClient
 	cmsconn    *cms.Client
+	onsconn		*ons.Client
 }
 
 // Client for AliyunClient
@@ -131,6 +133,11 @@ func (c *Config) Client() (*AliyunClient, error) {
 	if err != nil {
 		return nil, err
 	}
+	onsconn, err := c.onsConn()
+	if err != nil {
+		return nil, err
+	}
+
 	return &AliyunClient{
 		Region:     c.Region,
 		RegionId:   c.RegionId,
@@ -148,6 +155,7 @@ func (c *Config) Client() (*AliyunClient, error) {
 		kmsconn:    kmsconn,
 		otsconn:    otsconn,
 		cmsconn:    cmsconn,
+		onsconn:	onsconn,
 	}, nil
 }
 
@@ -283,6 +291,18 @@ func (c *Config) otsConn() (*tablestore.TableStoreClient, error) {
 
 func (c *Config) cmsConn() (*cms.Client, error) {
 	return cms.NewClientWithOptions(c.RegionId, getSdkConfig(), c.getAuthCredential(false))
+}
+
+func (c *Config) onsConn() (*ons.Client, error){
+	endpoint := os.Getenv("ONS_ENDPOINT")
+	if endpoint == "" {
+		endpoint = "https://" + "ons." + c.RegionId + ".aliyuncs.com"
+	}
+	client, err:= ons.NewClient(c.AccessKey, c.SecretKey, endpoint)
+	if err != nil {
+		return nil, err
+	}
+	return client, nil
 }
 
 func getSdkConfig() *sdk.Config {
