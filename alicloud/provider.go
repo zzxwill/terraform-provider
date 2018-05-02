@@ -63,6 +63,7 @@ func Provider() terraform.ResourceProvider {
 			"alicloud_dns_domain_groups":  dataSourceAlicloudDnsGroups(),
 			"alicloud_dns_domain_records": dataSourceAlicloudDnsRecords(),
 			// alicloud_ram_account_alias has been deprecated
+			"alicloud_ons_regions":		dataSourceAlicloudOnsRegions(),
 			"alicloud_ram_account_alias":    dataSourceAlicloudRamAccountAlias(),
 			"alicloud_ram_account_aliases":  dataSourceAlicloudRamAccountAlias(),
 			"alicloud_ram_groups":           dataSourceAlicloudRamGroups(),
@@ -135,6 +136,8 @@ func Provider() terraform.ResourceProvider {
 			"alicloud_ots_table":                   resourceAlicloudOtsTable(),
 			"alicloud_cms_alarm":                   resourceAlicloudCmsAlarm(),
 			"alicloud_ons_topic":					resourceAlicloudOnsTopic(),
+			"alicloud_ons_topic_producer":			resourceAlicloudOnsTopicProducer(),
+			"alicloud_ons_topic_consumer":			resourceAlicloudOnsTopicConsumer(),
 		},
 
 		ConfigureFunc: providerConfigure,

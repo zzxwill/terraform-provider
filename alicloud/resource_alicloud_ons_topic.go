@@ -22,7 +22,7 @@ func resourceAlicloudOnsTopic() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
-			"_regionId": &schema.Schema{
+			"regionid": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
@@ -34,9 +34,9 @@ func resourceAlicloudOnsTopic() *schema.Resource {
 func resourceAliyunOnsTopicCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*AliyunClient).onsconn
 	topic := d.Get("topic").(string)
-	regionId := d.Get("_regionId").(string)
+	regionId := d.Get("regionid").(string)
 
-	createTopicRequest := ons.CreateCreateTopicRequest(topic, regionId)
+	createTopicRequest := ons.CreateCreateTopicRequest(regionId, topic)
 	createTopicResponse, err := client.CreateTopic(createTopicRequest)
 	if err != nil {
 		return fmt.Errorf("Failed to create topic with error: %s", err)
@@ -45,15 +45,16 @@ func resourceAliyunOnsTopicCreate(d *schema.ResourceData, meta interface{}) erro
 		return fmt.Errorf("Failed to create topic with error: [%s]%s", createTopicResponse.Status, createTopicResponse.Message)
 	}
 
+	d.SetId(topic)
 	return resourceAliyunOnsTopicRead(d, meta)
 }
 
 func resourceAliyunOnsTopicRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*AliyunClient).onsconn
 	topic := d.Get("topic").(string)
-	regionId := d.Get("_regionId").(string)
+	regionId := d.Get("regionid").(string)
 
-	describeTopicRequest := ons.CreateDescribeTopicRequest(topic, regionId)
+	describeTopicRequest := ons.CreateDescribeTopicRequest(regionId, topic)
 	describeTopicResponse, err := client.DescribeTopic(describeTopicRequest)
 
 	if err != nil {
@@ -65,7 +66,7 @@ func resourceAliyunOnsTopicRead(d *schema.ResourceData, meta interface{}) error 
 
 	d.Set("topic", describeTopicResponse.Data[0].Topic)
 	d.Set("id", describeTopicResponse.Data[0].Id)
-	d.Set("_regionId", describeTopicResponse.Data[0].RegionId)
+	d.Set("regionid", describeTopicResponse.Data[0].RegionId)
 	d.Set("regionName", describeTopicResponse.Data[0].RegionName)
 	d.Set("status", describeTopicResponse.Data[0].Status )
 
@@ -75,7 +76,7 @@ func resourceAliyunOnsTopicRead(d *schema.ResourceData, meta interface{}) error 
 func resourceAliyunOnsTopicDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(*AliyunClient).onsconn
 	topic := d.Get("topic").(string)
-	regionId := d.Get("_regionId").(string)
+	regionId := d.Get("regionid").(string)
 
 	return resource.Retry(2*time.Minute, func() *resource.RetryError {
 		deleteTopicRequest := ons.CreateDeleteTopicRequest(regionId, topic)
