@@ -9,6 +9,14 @@ const (
 	PublicType_  = InstanceType("0")
 )
 
+type DrdsDbEncode string
+const(
+	UTF8Encode = DrdsDbEncode("utf8")
+	GBKEncode = DrdsDbEncode("gbk")
+	Latin1Encode = DrdsDbEncode("latin1")
+	Utf8mb4Encode = DrdsDbEncode("utf8mb4")
+)
+
 type DRDSInstancePayType string
 
 const (

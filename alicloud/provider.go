@@ -135,6 +135,7 @@ func Provider() terraform.ResourceProvider {
 			"alicloud_ots_table":                   resourceAlicloudOtsTable(),
 			"alicloud_cms_alarm":                   resourceAlicloudCmsAlarm(),
 			"alicloud_drds_instance":               resourceAliCloudDRDSInstance(),
+			"alicloud_drds_db":						resourceAliCloudDRDSDb(),
 		},
 
 		ConfigureFunc: providerConfigure,
