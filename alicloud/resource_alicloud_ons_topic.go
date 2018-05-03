@@ -2,7 +2,7 @@ package alicloud
 
 import (
 	"github.com/hashicorp/terraform/helper/schema"
-	"mq_admin/service/ons"
+	"github.com/Dreamheart/apsarastack-mq-go-sdk/service/ons"
 	"fmt"
 	"github.com/hashicorp/terraform/helper/resource"
 	"time"
