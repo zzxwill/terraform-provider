@@ -135,9 +135,10 @@ func Provider() terraform.ResourceProvider {
 			"alicloud_router_interface":            resourceAlicloudRouterInterface(),
 			"alicloud_ots_table":                   resourceAlicloudOtsTable(),
 			"alicloud_cms_alarm":                   resourceAlicloudCmsAlarm(),
-			"alicloud_ons_topic":					resourceAlicloudOnsTopic(),
-			"alicloud_ons_topic_producer":			resourceAlicloudOnsTopicProducer(),
-			"alicloud_ons_topic_consumer":			resourceAlicloudOnsTopicConsumer(),
+			"alicloud_ons_topic":			resourceAlicloudOnsTopic(),
+			"alicloud_ons_topic_producer":		resourceAlicloudOnsTopicProducer(),
+			"alicloud_ons_topic_consumer":		resourceAlicloudOnsTopicConsumer(),
+			"alicloud_drds_instance":               resourceAliCloudDRDSInstance(),
 		},
 
 		ConfigureFunc: providerConfigure,
