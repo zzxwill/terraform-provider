@@ -6,14 +6,12 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/helper/schema"
 	"time"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 )
 
 func resourceAliCloudDRDSDb() *schema.Resource {
 	return &schema.Resource{
 		Create: resourceAliCloudDRDSDbCreate,
 		Read:   resourceAliCloudDRDSDbRead,
-		Update: resourceAliCloudDRDSDbFullTableUpdate,
 		Delete: resourceAliCloudDRDSDbDelete,
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
@@ -72,7 +70,7 @@ func resourceAliCloudDRDSDbCreate(d *schema.ResourceData, meta interface{}) erro
 
 	d.SetId(instanceId)
 
-	return resourceAliCloudDRDSDbFullTableUpdate(d, meta)
+	return resourceAliCloudDRDSDbRead(d, meta)
 }
 
 func resourceAliCloudDRDSDbRead(d *schema.ResourceData, meta interface{}) error {
@@ -88,39 +86,9 @@ func resourceAliCloudDRDSDbRead(d *schema.ResourceData, meta interface{}) error 
 	if err != nil || res == nil  {
 		return fmt.Errorf("failed to describe DRDS database with error: %s", err)
 	}
-	fmt.Print(data)
 
-	// `description` isn't returned somehow, reported a bug https://connect.aliyun.com/suggestion/39734.
-	//d.Set("description", data.Description)
-
-	// As describe only return `type` 0 or 1, convert `type`. https://help.aliyun.com/document_detail/51126.html
-	//d.Set("type", convertTypeValue(data.Type, d.Get("type").(string)))
-	//d.Set("zone_id", data.ZoneId)
-
+	d.Set("db_name", data.DbName)
 	return nil
-}
-
-func resourceAliCloudDRDSDbFullTableUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(*AliyunClient).drdsconn
-	update := false
-
-	req := drds.CreateModifyFullTableScanRequest()
-	req.DrdsInstanceId = d.Id()
-
-	if d.HasChange("full_table_scan") && !d.IsNewResource() {
-		update = true
-		req.FullTableScan = d.Get("full_table_scan").(requests.Boolean)
-	}
-
-	if update {
-		_, err := client.ModifyFullTableScan(req)
-
-		if err != nil {
-			return fmt.Errorf("failed to update Drds instance with error: %s", err)
-		}
-	}
-
-	return resourceAliCloudDRDSDbRead(d, meta)
 }
 
 func resourceAliCloudDRDSDbDelete(d *schema.ResourceData, meta interface{}) error {
