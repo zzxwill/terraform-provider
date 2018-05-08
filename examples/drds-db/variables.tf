@@ -1,13 +1,13 @@
 variable "drds_instance_id" {
-  default = "drdsxzrug4u921l3"
+  default = "drdsxzruxtxs0vco"
 }
 
 variable "db_name" {
-  default = "xxx"
+  default = "drds_tf"
 }
 
 variable "encode" {
-  default = "cn-hangzhou-b"
+  default = "utf8"
 }
 
 variable "password" {
@@ -15,5 +15,5 @@ variable "password" {
 }
 
 variable "rds_instances" {
-  default = "[\"DBInstanceId\": \"rm-bp1865y7whv5u665k\"]"
+  default = "[\"rm-bp1eyvip0rbi4u663\"]"
 }
