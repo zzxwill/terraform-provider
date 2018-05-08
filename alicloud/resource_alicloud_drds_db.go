@@ -26,26 +26,26 @@ func resourceAliCloudDRDSDb() *schema.Resource {
 			"db_name": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 				ValidateFunc:validateStringLengthInRange(0,25),
 			},
 			"encode": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 				ValidateFunc:validateAllowedStringValue([]string{string(UTF8Encode), string(GBKEncode),
 				string(Latin1Encode), string(Utf8mb4Encode)}),
 			},
 			"password": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 				ValidateFunc:validateStringLengthInRange(7,31),
 			},
 			"rds_instances": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
-			},
-			"full_table_scan": &schema.Schema{
-				Type:     schema.TypeBool,
-				Optional: true,
+				ForceNew: true,
 			},
 		},
 	}
@@ -108,9 +108,6 @@ func resourceAliCloudDRDSDbDelete(d *schema.ResourceData, meta interface{}) erro
 			}
 		}
 
-		//if res == nil || res.Data.DrdsInstanceId == "" {
-		//	return nil
-		//}
 		if res == nil {
 			return nil
 		}
@@ -121,7 +118,7 @@ func resourceAliCloudDRDSDbDelete(d *schema.ResourceData, meta interface{}) erro
 
 		removeRes, removeErr := client.DeleteDrdsDB(removeReq)
 		if removeErr != nil || (removeRes != nil && !removeRes.Success) {
-			return resource.RetryableError(fmt.Errorf("failed to delete instance timeout "+
+			return resource.RetryableError(fmt.Errorf("deleting database timeout "+
 				"and got an error: %#v", err))
 		}
 

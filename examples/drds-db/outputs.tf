@@ -1,31 +1,11 @@
-output "instance" {
-  value = "${alicloud_drds_instance.instance.id}"
+output "db_name" {
+  value = "${alicloud_drds_db.db.db_name}"
 }
 
-output "description" {
-  value = "${alicloud_drds_instance.instance.description}"
+output "drds_instance" {
+  value = "${alicloud_drds_db.db.drds_instance_id}"
 }
 
-output "type" {
-  value = "${alicloud_drds_instance.instance.type}"
-}
-
-output "zone_id" {
-  value = "${alicloud_drds_instance.instance.zone_id}"
-}
-
-output "specification" {
-  value = "${alicloud_drds_instance.instance.specification}"
-}
-
-output "pay_type" {
-  value = "${alicloud_drds_instance.instance.pay_type}"
-}
-
-output "instance_series" {
-  value = "${alicloud_drds_instance.instance.instance_series}"
-}
-
-output "quantity" {
-  value = "${alicloud_drds_instance.instance.quantity}"
+output "rds_instances" {
+  value = "${alicloud_drds_db.db.rds_instances}"
 }

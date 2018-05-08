@@ -95,10 +95,10 @@ provider "alicloud" {
 }
 resource "alicloud_drds_db" "basic" {
   provider = "alicloud"
-  drds_instance_id = "drdsxzru72io1j0f"
+  drds_instance_id = "drdsxzruy9if6ya1"
   db_name = "testdb2"
   encode = "utf8"
   password = "Admin123"
-  rds_instances = "[\"rm-bp1865y7whv5u665k\", \"rm-bp1865y7whv5u665l\"]"
+  rds_instances = "[\"rm-bp1865y7whv5u665k\"]"
 }
 `
